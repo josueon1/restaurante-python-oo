@@ -1,4 +1,5 @@
 from modelos.avaliacao import Avaliacao
+from modelos.cardapio.item_cardapio import ItemCardapio
 
 # código omitido
 class Restaurante:
@@ -15,6 +16,7 @@ class Restaurante:
         self.categoria = categoria.title() # o title() coloca a primeira letra de cada palavra em maiusculo 
         self._ativo = False
         self._avaliacao=[]
+        self._cardapio=[]
         Restaurante.restaurantes.append(self)  # adicione(append) a Restaurante à lista de restaurantes da classe
 
     def __str__(self):#  método para retornar uma string representando o restaurante
@@ -40,5 +42,18 @@ class Restaurante:
         quantidade_de_notas=len(self._avaliacao)
         media=round(soma_das_notas/quantidade_de_notas)
         return media
-        
-        
+
+    def add_item_no_cardapio(self,item):
+        if isinstance(item,ItemCardapio):# o isinstance verifica se item é do itemCardapio
+            self._cardapio.append(item)
+
+    @property
+    def exibir_cardapio(self):
+        print(f'\nCardapio do restaurante {self.nome}\n')
+        for i,item in enumerate(self._cardapio,start=1):
+            if hasattr(item,'descricao'):               
+                mensagem_prato=f'{i}. nome:{item._nome} | preco R$:{item._preco} | descricao:{item.descricao}'
+                print(mensagem_prato)
+            else:
+                mensagem_bebida=f'{i}. nome:{item._nome} | preco R$:{item._preco} | tamanho:{item.tamanho}'
+                print(mensagem_bebida)
